@@ -250,6 +250,11 @@ ifeq ($(strip $(TARGET_ARM_GCC_VERSION)),)
 TARGET_ARM_GCC_VERSION := 4.6
 endif
 
+# default kernel toolchain prefix
+ifeq ($(strip $(ARM_TOOLCHAIN_PREFIX)),)
+ARM_TOOLCHAIN_PREFIX := arm-eabi-
+endif
+
 # $(1): os/arch
 define select-android-config-h
 build/core/combo/include/arch/$(1)/AndroidConfig.h
