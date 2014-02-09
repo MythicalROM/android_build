@@ -249,10 +249,24 @@ TARGET_CPU_ABI2 := $(strip $(TARGET_CPU_ABI2))
 ifeq ($(strip $(TARGET_ARM_GCC_VERSION)),)
 TARGET_ARM_GCC_VERSION := 4.6
 endif
+ifneq ($(filter 4.7-linaro 4.8-linaro,$(TARGET_ARM_GCC_VERSION)),)
+  ifneq ($(filter cortex-a8 cortex-a9 cortex-a15,$(TARGET_CPU_VARIANT)),)
+    ARM_VARIANT := $(TARGET_CPU_VARIANT)
+  else
+    ARM_VARIANT := unknown
+  endif
+endif
 
 # default kernel toolchain prefix
 ifeq ($(strip $(ARM_TOOLCHAIN_PREFIX)),)
 ARM_TOOLCHAIN_PREFIX := arm-eabi-
+endif
+ifneq ($(filter 4.7-linaro 4.8-linaro,$(TARGET_ARM_GCC_VERSION)),)
+  ifneq ($(filter cortex-a9 cortex-a15,$(TARGET_CPU_VARIANT)),)
+    ARM_TOOLCHAIN_PREFIX := arm-gnueabihf-
+  else
+    ARM_TOOLCHAIN_PREFIX := arm-gnueabi-
+  endif
 endif
 
 # $(1): os/arch

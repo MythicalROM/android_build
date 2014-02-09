@@ -15,9 +15,16 @@ ifeq ($(TARGET_ARCH),arm)
         # this should be copied to HOST_OUT_EXECUTABLES instead
         ABP:=$(ABP):$(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)/bin
     endif
-    ifneq ($(wildcard $(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/bin),)
-        # this should be copied to HOST_OUT_EXECUTABLES instead
-        ABP:=$(ABP):$(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/bin
+    ifneq ($(filter 4.7-linaro 4.8-linaro,$(TARGET_ARM_GCC_VERSION)),)
+      ifneq ($(wildcard $(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/$(ARM_VARIANT)/bin),)
+          # this should be copied to HOST_OUT_EXECUTABLES instead
+          ABP:=$(ABP):$(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/$(ARM_VARIANT)/bin
+      endif
+    else
+      ifneq ($(wildcard $(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/bin),)
+          # this should be copied to HOST_OUT_EXECUTABLES instead
+          ABP:=$(ABP):$(PWD)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_ARM_GCC_VERSION)/bin
+      endif
     endif
 else ifeq ($(TARGET_ARCH),x86)
 

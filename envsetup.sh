@@ -124,6 +124,8 @@ function setpaths()
     export TARGET_GCC_VERSION=$targetgccversion
 
     # ARM toolchain defined in core/config.mk
+    targetarmvariant=$(get_build_var ARM_VARIANT)
+    export ARM_VARIANT=$targetarmvariant
     targetarmgccversion=$(get_build_var TARGET_ARM_GCC_VERSION)
     export TARGET_ARM_GCC_VERSION=$targetarmgccversion
 
@@ -149,7 +151,11 @@ function setpaths()
     unset ARM_EABI_TOOLCHAIN ARM_EABI_TOOLCHAIN_PATH
     case $ARCH in
         arm)
-            toolchaindir=arm/arm-eabi-$targetarmgccversion/bin
+            if [ "$targetarmvariant" == "" ]; then
+              toolchaindir=arm/arm-eabi-$targetarmgccversion/bin
+            else
+              toolchaindir=arm/arm-eabi-$targetarmgccversion/$targetarmvariant/bin
+            fi
             if [ -d "$gccprebuiltdir/$toolchaindir" ]; then
                  export ARM_EABI_TOOLCHAIN="$gccprebuiltdir/$toolchaindir"
                  ARM_EABI_TOOLCHAIN_PATH=":$gccprebuiltdir/$toolchaindir"
